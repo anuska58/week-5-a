@@ -7,6 +7,7 @@ def load_data(url=None):
     if url is None:
         url = "https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv"
     df = pd.read_csv(url)
+    df = df.rename(columns=str.lower)
     return df
 
 
