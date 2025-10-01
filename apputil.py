@@ -68,7 +68,7 @@ def determine_age_division(df=None):
         df = load_data()
     median_by_class = df.groupby("pclass")["age"].transform("median")
     df["older_passenger"] = df["age"] > median_by_class
-    df["older_passenger"] = df["older_passenger"].fillna(False) 
+    df.loc[df["age"].isna(), "older_passenger"] = pd.NA
     return df
 
 def visualize_demographic(df=None):
