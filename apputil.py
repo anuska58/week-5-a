@@ -60,3 +60,49 @@ def determine_age_division(df):
     median_by_class = df.groupby("Pclass")["Age"].transform("median")
     df["older_passenger"] = df["Age"] > median_by_class
     return df
+
+def visualize_demographic(df):
+    """
+        Visualize survival patterns based on demographics."""
+    demo_df = survival_demographics(df)
+    fig = px.bar(
+        demo_df,
+        x='AgeGroup',
+        y='survival_rate',
+        color="Sex",
+        barmode='group',
+        facet_col='Pclass',
+        title='Survival Rate by Age Group, Sex, and Passenger Class'
+    )
+    #fig.update_layout(yaxis_title='Survival Rate', xaxis_title='Age Group')
+    return fig
+
+def visualize_families(df):
+    """
+    Visualize survival patterns based on family size and wealth.
+    """
+    table_df = family_groups(df)
+    fig=px.line(
+        table_df,
+        x='family_size',
+        y='avg_fare',
+        color='Pclass',
+        markers=True,
+        title='Average Fare by Family Size and Class'
+    )
+    return fig
+
+def visualize_family_size(df):
+    """
+    Visualize the distribution of family sizes.
+    """
+    table=family_groups(df)
+    fig=px.bar(
+       table,
+       x='family_size',
+       y='n_passengers',
+       color='Pclass',
+       barmode='group',
+       title='Number of Passengers by Family Size and Class'
+   )
+    return fig

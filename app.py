@@ -3,8 +3,7 @@ import streamlit as st
 from apputil import *
 
 # Load Titanic dataset
-df = pd.read_csv('https://raw.githubusercontent.com/leontoddjohnson/datasets/main/data/titanic.csv')
-
+df=load_data()
 st.write(
 '''
 # Titanic Visualization 1
@@ -12,7 +11,7 @@ st.write(
 '''
 )
 # Generate and display the figure
-fig1 = visualize_demographic()
+fig1 = visualize_demographic(df)
 st.plotly_chart(fig1, use_container_width=True)
 
 st.write(
@@ -21,7 +20,7 @@ st.write(
 '''
 )
 # Generate and display the figure
-fig2 = visualize_families()
+fig2 = visualize_families(df)
 st.plotly_chart(fig2, use_container_width=True)
 
 st.write(
@@ -30,5 +29,5 @@ st.write(
 '''
 )
 # Generate and display the figure
-fig3 = visualize_family_size()
+fig3 = visualize_family_size(df)
 st.plotly_chart(fig3, use_container_width=True)
