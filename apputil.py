@@ -17,9 +17,9 @@ def survival_demographics():
     df = load_data()
     bins=[0,12,19,59,float('inf')]
     labels=['Child','Teen','Adult','Senior']
-    df['age_group'] = pd.cut(df['Age'], bins=bins, labels=labels, right=True)
+    df['age_group'] = pd.cut(df['age'], bins=bins, labels=labels, right=True)
 
-    grouped = df.groupby(['Pclass', 'Sex', 'age_group'])
+    grouped = df.groupby(['pclass', 'sex', 'age_group'])
 
     result=grouped['Survived'].agg(
         n_passengers='count',
@@ -27,7 +27,7 @@ def survival_demographics():
         survival_rate='mean'
         ).reset_index()
     
-    result=result.sort_values(by=['Pclass','Sex','age_group']).reset_index(drop=True)
+    result=result.sort_values(by=['pclass','sex','age_group']).reset_index(drop=True)
     return result
 
 def family_groups():
@@ -36,14 +36,14 @@ def family_groups():
     """
     df = load_data()
     df['family_size'] = df['SibSp'] + df['Parch'] + 1  # Including the passenger themselves
-    grouped = df.groupby(['family_size', 'Pclass'])["Fare"]
+    grouped = df.groupby(['family_size', 'pclass'])["Fare"]
     result = grouped.agg(
         n_passengers='count',
         avg_fare='mean',
         min_fare='min',
         max_fare='max'
         ).reset_index()
-    result = result.sort_values(by=['Pclass', 'family_size']).reset_index(drop=True)
+    result = result.sort_values(by=['pclass', 'family_size']).reset_index(drop=True)
     return result
 
 def last_names():
@@ -61,8 +61,8 @@ def determine_age_division():
     than the median age for their passenger class.
     """
     df = load_data()
-    median_by_class = df.groupby("Pclass")["Age"].transform("median")
-    df["older_passenger"] = df["Age"] > median_by_class
+    median_by_class = df.groupby("pclass")["age"].transform("median")
+    df["older_passenger"] = df["age"] > median_by_class
     return df
 
 def visualize_demographic():
@@ -74,10 +74,10 @@ def visualize_demographic():
         demo_df,
         x='age_group',
         y='survival_rate',
-        color="Sex",
+        color="sex",
         barmode='group',
-        facet_col='Pclass',
-        title='Survival Rate by Age Group, Sex, and Passenger Class'
+        facet_col='pclass',
+        title='Survival Rate by Age Group, sex, and Passenger Class'
     )
     #fig.update_layout(yaxis_title='Survival Rate', xaxis_title='Age Group')
     return fig
@@ -92,7 +92,7 @@ def visualize_families():
         table_df,
         x='family_size',
         y='avg_fare',
-        color='Pclass',
+        color='pclass',
         markers=True,
         title='Average Fare by Family Size and Class'
     )
@@ -108,7 +108,7 @@ def visualize_family_size():
        table,
        x='family_size',
        y='n_passengers',
-       color='Pclass',
+       color='pclass',
        barmode='group',
        title='Number of Passengers by Family Size and Class'
    )
